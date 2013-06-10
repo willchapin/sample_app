@@ -7,4 +7,10 @@ module ApplicationHelper
       "#{base_title} | #{page_title}"
     end
   end
+  
+  def logo
+    
+  
+  end
+  
 end
