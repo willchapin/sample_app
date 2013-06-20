@@ -17,5 +17,17 @@ class UsersController < ApplicationController
       render 'new'
     end
   end
+  
+  def edit
+   @user = User.find_by_id(params[:id]) 
+  end
 
+  def update
+    @user = User.new(params[:user])
+    if @user.update_attributes(params[:user])
+      #do something
+    else
+      render 'edit'
+    end
+  end
 end
