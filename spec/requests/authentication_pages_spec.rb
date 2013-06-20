@@ -27,11 +27,7 @@ describe "AuthenticationPages" do
     
     describe "with invalid information" do
       let(:user) { FactoryGirl.create(:user) }
-      before do
-        fill_in "Email", with: user.email
-        fill_in "Password", with: user.password
-        click_button "Sign in"
-      end
+      before { sign_in user }
       
       it { should have_selector('title', text: user.name) }
       it { should have_link('Profile',     href: user_path(user)) }
@@ -45,4 +41,27 @@ describe "AuthenticationPages" do
       end
     end
   end 
+
+  describe "authorization" do
+    let(:user) { FactoryGirl.create(:user) }
+    
+    describe "for non-signed-in users" do
+      
+      describe "in the Users controller" do
+        
+        describe "visiting edit page" do
+          before { visit edit_user_path(user) }
+          it { should have_selector('title', text: "Sign in") }
+          it { should have_selector('div.alert.alert-notice') }
+        end
+        
+        describe "subbmitting to the update action" do
+          before { put user_path(user) }
+          specify { response.should redirect_to signin_path }
+          
+        end
+      end
+    end
+    
+  end
 end
