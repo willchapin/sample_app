@@ -31,8 +31,8 @@ describe User do
   it { should respond_to(:authenticate) }
 
 
-  it { should_not be_admin }
   it { should be_valid }
+  it { should_not be_admin }
  
   describe "accessible attributes" do
     it "should not allow access to admin" do

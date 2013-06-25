@@ -39,6 +39,13 @@ before_filter :correct_user, only: [:edit, :update]
     end
   end
 
+  def destroy
+    @user = User.find(params[:id])
+    flash[:success] = "#{@user.name} has been destroyed"
+    @user.destroy
+    redirect_to users_path
+  end
+
   private 
     def signed_in_user
       unless signed_in?
