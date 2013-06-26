@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-before_filter :signed_in_user, only: [:index, :edit, :update]
+before_filter :signed_in_user, only: [:index, :edit, :update, :destroy]
 before_filter :correct_user, only: [:edit, :update] 
   
   def index
@@ -40,9 +40,8 @@ before_filter :correct_user, only: [:edit, :update]
   end
 
   def destroy
-    @user = User.find(params[:id])
-    flash[:success] = "#{@user.name} has been destroyed"
-    @user.destroy
+    User.find(params[:id]).destroy
+    flash[:success] = "User destroyed."
     redirect_to users_path
   end
 
