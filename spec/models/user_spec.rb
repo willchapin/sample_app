@@ -163,5 +163,6 @@ describe User do
         Micropost.find_by_id(micropost.id).should be_nil
       end
     end
+    
   end
 end
