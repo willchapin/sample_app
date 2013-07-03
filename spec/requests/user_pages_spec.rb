@@ -59,8 +59,8 @@ describe "User Pages" do
   
   describe "profile page" do
     let(:test_user) { FactoryGirl.create(:user) }
-    let(:micropost1) { FactoryGirl.create(:micropost, user: test_user, content: "Foo") }
-    let(:micropost2) { FactoryGirl.create(:micropost, user: test_user, content: "Bar") }
+    let!(:micropost1) { FactoryGirl.create(:micropost, user: test_user, content: "Foo") }
+    let!(:micropost2) { FactoryGirl.create(:micropost, user: test_user, content: "Bar") }
 
     before { visit user_path(test_user) }
     
@@ -70,7 +70,7 @@ describe "User Pages" do
     describe "microposts" do
       it { should have_content(micropost1.content) }
       it { should have_content(micropost2.content) }
-      it { should have_content(user.microposts.count) }
+      it { should have_content(test_user.microposts.count) }
     end
   end
  
