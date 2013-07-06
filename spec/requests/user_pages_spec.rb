@@ -2,13 +2,13 @@ require 'spec_helper'
 
 describe "User Pages" do
   subject { page }
-
+  after(:all) { User.delete_all }
+  
   describe "index" do
 
     let(:user) { FactoryGirl.create(:user) }
 
     before(:all) { 30.times { FactoryGirl.create(:user) } }
-    after(:all) { User.delete_all }
 
     before(:each) do
       sign_in user
