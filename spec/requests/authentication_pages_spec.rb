@@ -73,7 +73,6 @@ describe "Authentication" do
               
             it { should have_selector 'title', text: user.name }
           end
-
         end 
       end
       
@@ -84,41 +83,50 @@ describe "Authentication" do
           it { should have_selector('div.alert.alert-notice') }
         end
         
-        describe "subbmitting to the update action" do
+        describe "submitting to the update action" do
           before { put user_path(user) }
           specify { response.should redirect_to signin_path }
-          
         end
       end
-    end
-  
 
-    describe "as wrong user" do
-      let(:user) { FactoryGirl.create(:user) }
-      let (:wrong_user) { FactoryGirl.create(:user, email: 'wrong@fake.com') }
-      before { sign_in user }
-     
-      describe "visiting Users#edit page" do
-        before { visit edit_user_path(wrong_user) }
-        it { should_not have_selector('title', text: 'Edit') }
+      describe "in the Microposts controller" do
+        describe "submitting to the create action" do
+          before { post microposts_path }
+          specify { response.should redirect_to(signin_path) }
+        end
+        describe "submitting to the delete action" do
+          before { delete micropost_path(FactoryGirl.create(:micropost)) }
+          specify { response.should redirect_to(signin_path) }
+        end
       end
 
-      describe "submitting a PUT request" do
-        before { put user_path(wrong_user) }
-        specify { response.should redirect_to root_path } 
+      describe "as wrong user" do
+        let(:user) { FactoryGirl.create(:user) }
+        let (:wrong_user) { FactoryGirl.create(:user, email: 'wrong@fake.com') }
+        before { sign_in user }
+       
+        describe "visiting Users#edit page" do
+          before { visit edit_user_path(wrong_user) }
+          it { should_not have_selector('title', text: 'Edit') }
+        end
+
+        describe "submitting a PUT request" do
+          before { put user_path(wrong_user) }
+          specify { response.should redirect_to root_path } 
+        end
       end
-    end
-    
-    describe "as non-admin user" do
-      let(:user) { FactoryGirl.create(:user) }
-      let(:non_admin) { FactoryGirl.create(:user) }
-      before { sign_in non_admin }
+      
+      describe "as non-admin user" do
+        let(:user) { FactoryGirl.create(:user) }
+        let(:non_admin) { FactoryGirl.create(:user) }
+        before { sign_in non_admin }
 
-      describe "submitting request to User#destroy" do
-        before { delete user_path(user) }
-        specify { response.should redirect_to root_path }
+        describe "submitting request to User#destroy" do
+          before { delete user_path(user) }
+          specify { response.should redirect_to root_path }
 
-      end 
+        end 
+      end
     end
   end
 end
