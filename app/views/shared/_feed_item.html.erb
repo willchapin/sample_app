@@ -1,0 +1,10 @@
+<li>
+  <a href = "<%= user_path(current_user) %>">
+    <%= gravatar_for current_user, size: 56 %>
+  </a>
+  <%= link_to(current_user.name, current_user) %>
+  <span class = "content"><%= micropost.content %></span>
+  <span class = "timestamp">
+    Posted <%= time_ago_in_words(micropost.created_at) %> ago.
+  </span>
+</li>
