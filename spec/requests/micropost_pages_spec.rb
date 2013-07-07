@@ -4,7 +4,7 @@ describe "Micropst Pages" do
   subject { page }
 
   let(:user) { FactoryGirl.create(:user) }
-  before(:all) { 50.times { FactoryGirl.create(:micropost, user: user) }; pp user.microposts.first.content }
+  before(:all) { 50.times { FactoryGirl.create(:micropost, user: user) } }
   after(:all) do 
     Micropost.delete_all
     User.delete_all
@@ -38,9 +38,10 @@ describe "Micropst Pages" do
 
   describe "micropost feed" do
     it { should have_content('Micropost Feed') } 
-    it { should have_selector('li', text: user.microposts.first.content) }
+    it "should contain of the user's microposts" do
+      user.microposts.each do |micropost|
+        page.should have_selector('li', text: micropost.content)
+      end
+    end
   end
-
-  
-
 end
