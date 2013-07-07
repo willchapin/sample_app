@@ -1,4 +1,5 @@
 <% if signed_in? %>
+
   <div class = "row">
     <aside class = "span4">
       <section>
@@ -9,19 +10,14 @@
       </section>
     </aside>
 
-    <% unless @feed.blank? %>
-      <div class = "span8">
-        <h3>Micropost Feed</h3>
-        <ol class = "microposts">
-          <% @feed.each do |feed_item| %>
-            <%= render 'shared/feed_item', micropost: feed_item %>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
+    <div class = "span8">
+      <h3>Micropost Feed</h3>
+      <%= render 'shared/feed' %>
+    </div>
   </div>
 
 <% else %>
+
   <div class="center hero-unit">
     <h1>Welcome to the Sample App</h1>
 
@@ -36,4 +32,4 @@
 
 <%= link_to image_tag("rails.png", alt: "Rails"), 'http://rubyonrails.org/' %>
 
-<% end%>  
+<% end %>
