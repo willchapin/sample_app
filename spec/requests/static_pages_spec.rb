@@ -27,7 +27,7 @@ describe "Static pages" do
       end
 
       it "should be able to delete own microposts" do
-        expect { click_button('delete') }.to change(:Micropost, :count).by(1)
+        expect { click_link('delete') }.to change(Micropost, :count).by(-1)
       end
     end
   end

@@ -1,5 +1,6 @@
 class MicropostsController < ApplicationController
   before_filter :signed_in_user
+  before_filter :micropost_author, only: :destroy
 
   def create
     @micropost = current_user.microposts.build(params[:micropost])
@@ -14,6 +15,20 @@ class MicropostsController < ApplicationController
   end
 
   def destroy
+    @micropost.destroy
+    flash[:success] = "Micropost destroyed."
+    redirect_to root_path
   end
+
+
+  private
+
+    def micropost_author
+      @micropost = Micropost.find_by_id(params[:id])
+      @user = @micropost.user
+      redirect_to root_path unless current_user?(@user)
+    end
+
+  
 
 end
