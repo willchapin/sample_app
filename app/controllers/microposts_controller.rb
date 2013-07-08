@@ -24,9 +24,9 @@ class MicropostsController < ApplicationController
   private
 
     def micropost_author
-      @micropost = Micropost.find_by_id(params[:id])
-      @user = @micropost.user
-      redirect_to root_path unless current_user?(@user)
+      @micropost = current_user.microposts.find_by_id(params[:id])
+    rescue
+      redirect_to root_path 
     end
 
   
