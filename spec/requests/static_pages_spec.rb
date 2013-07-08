@@ -18,10 +18,16 @@ describe "Static pages" do
         visit root_path
       end
 
+      it { should have_selector('div.pagination') }
+
       it "should render the user's feed" do
-        user.feed.each do |item|
+        user.feed.paginate(page: 1, per_page: 10).each do |item|
           page.should have_selector("li##{item.id}", text: item.content)
         end
+      end
+
+      it "should be able to delete own microposts" do
+        expect { click_button('delete') }.to change(:Micropost, :count).by(1)
       end
     end
   end
