@@ -13,7 +13,7 @@ describe "Static pages" do
     describe "For signed in users" do
       let(:user) { FactoryGirl.create(:user) }
       before do
-        20.times { FactoryGirl.create(:micropost, user: user) }
+        31.times { FactoryGirl.create(:micropost, user: user) }
         sign_in(user)
         visit root_path
       end
@@ -21,7 +21,7 @@ describe "Static pages" do
       it { should have_selector('div.pagination') }
 
       it "should render the user's feed" do
-        user.feed.paginate(page: 1, per_page: 10).each do |item|
+        user.feed.paginate(page: 1).each do |item|
           page.should have_selector("li##{item.id}", text: item.content)
         end
       end
