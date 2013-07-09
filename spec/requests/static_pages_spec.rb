@@ -12,6 +12,7 @@ describe "Static pages" do
 
     describe "For signed in users" do
       let(:user) { FactoryGirl.create(:user) }
+      let(:other_micropost) { FactoryGirl.create(:micropost) }
       before do
         31.times { FactoryGirl.create(:micropost, user: user) }
         sign_in(user)
@@ -28,6 +29,10 @@ describe "Static pages" do
 
       it "should be able to delete own microposts" do
         expect { click_link('delete') }.to change(Micropost, :count).by(-1)
+      end
+
+      it "should not have a delete option for other user's microposts" do
+        page.should_not have_selector("li##{other_micropost.id}", text: 'delete')
       end
     end
   end
