@@ -6,7 +6,7 @@ describe Relationship do
   let(:followed) { FactoryGirl.create(:user) }
   let(:relationship) { follower.relationships.build(followed_id: followed.id) }
 
-  subject(:relationship)
+  subject { relationship }
 
   it { should be_valid }
 
@@ -16,6 +16,13 @@ describe Relationship do
         Relationship.new(follower_id: follower.id)
       end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
     end
+  end
+
+  describe "follower methods" do
+    it { should respond_to(:follower) }
+    it { should respond_to(:followed) }
+    its(:follower) { should == follower }
+    its(:followed) { should == followed }
   end
 
 end
