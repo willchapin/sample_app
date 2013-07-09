@@ -6,6 +6,7 @@ describe "Micropst Pages" do
   let(:user) { FactoryGirl.create(:user) }
 
   before do
+    FactoryGirl.create(:micropost, user: user)
     sign_in(user)
     visit root_path
   end
@@ -27,6 +28,12 @@ describe "Micropst Pages" do
       before { fill_in('micropost_content', with: Faker::Lorem.sentence) }
       it "should create a micropost" do
         expect { click_button 'Post' }.to change(Micropost, :count).by(1)
+      end
+    end
+
+    describe "delete microposts" do
+      it "should delete the micropost from the database" do
+        expect { click_link('delete') }.to change(Micropost, :count).by(-1)
       end
     end
   end 
