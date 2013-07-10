@@ -25,4 +25,13 @@ describe Relationship do
     its(:followed) { should == followed }
   end
 
+  describe "validates the presence of follower_id" do
+    before { relationship.follower_id = nil }
+    it { should_not be_valid }
+  end
+
+  describe "validates the presence of followed_id" do
+    before { relationship.followed_id = nil }
+    it { should_not be_valid }
+  end
 end
