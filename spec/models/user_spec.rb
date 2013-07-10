@@ -20,9 +20,12 @@ describe User do
   it { should respond_to(:authenticate) }
   it { should respond_to(:feed) }
   it { should respond_to(:relationships) }
+  it { should respond_to(:reverse_relationships) }
   it { should respond_to(:followed_users) }
+  it { should respond_to(:followers) }
   it { should respond_to(:follow!) }
   it { should respond_to(:following?) }
+
 
 
   it { should be_valid }
@@ -179,11 +182,14 @@ describe User do
 
     it { should be_following(other_user) }
     its(:followed_users) { should include(other_user) }
+    
+    describe "followed_user" do
+      subject { other_user }
+      its(:followers) { should include(@user) } 
+    end
 
     describe "and unfollowing" do
-      before do
-        @user.unfollow!(other_user)
-      end
+      before { @user.unfollow!(other_user) }
 
     it { should_not be_following(other_user) }
     its(:followed_users) { should_not include(other_user) }
