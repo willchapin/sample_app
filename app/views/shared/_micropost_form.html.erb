@@ -1,4 +1,5 @@
 <%= form_for(@micropost) do |f| %>
+  <span id = "count_down">140 characters remaining...</span>
   <%= render 'shared/error_messages', object: @micropost %>
   <div class = "field">
     <%= f.text_area :content, placeholder: "Compose new micropost..." %>

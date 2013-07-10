@@ -13,6 +13,7 @@ describe "Static pages" do
     describe "For signed in users" do
       let(:user) { FactoryGirl.create(:user) }
       let(:other_micropost) { FactoryGirl.create(:micropost) }
+
       before do
         31.times { FactoryGirl.create(:micropost, user: user) }
         sign_in(user)
@@ -34,6 +35,19 @@ describe "Static pages" do
       it "should not have a delete option for other user's microposts" do
         page.should_not have_selector("li##{other_micropost.id}", text: 'delete')
       end
+
+      describe "following/followers counts" do
+        let(:follower) { FactoryGirl.create(:user) }
+        before do
+          follower.follow!(user)
+          visit root_path
+        end
+
+        it { should have_link '0 following', href: following_user_path(user) }
+        it { should have_link '1 followers', href: followers_user_path(user) }
+
+      end
+
     end
   end
 
