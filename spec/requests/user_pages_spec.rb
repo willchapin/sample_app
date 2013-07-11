@@ -2,7 +2,9 @@ require 'spec_helper'
 
 describe "User Pages" do
   subject { page }
-  after(:all) { User.delete_all }
+  after(:all) do
+    User.delete_all
+  end
   
   describe "index" do
 
@@ -57,14 +59,49 @@ describe "User Pages" do
   end
   
   describe "profile page" do
-    let(:test_user) { FactoryGirl.create(:user) }
-    before(:all) { 50.times { FactoryGirl.create(:micropost, user: test_user) } }
-    after(:all) { Micropost.delete_all }
+    let(:user) { FactoryGirl.create(:user) }
       
-    before(:each) { visit user_path(test_user) } 
-    it { should have_selector('h1', text: test_user.name) }
-    it { should have_selector('title', text: test_user.name) }
+    before { visit user_path(user) } 
+    it { should have_selector('h1', text: user.name) }
+    it { should have_selector('title', text: user.name) }
+    
+    describe "follow/unfollow buttons" do
+      let(:other_user) { FactoryGirl.create(:user) }
+      before { sign_in user }
 
+      describe "following a user" do
+        before { visit user_path(other_user) }
+
+        it "should increment followed_users count" do
+          expect do 
+            click_button 'Follow'
+          end.to change(user.followed_users, :count).by(1)
+        end
+        
+        it "should increment the other user's followers count" do
+          expect do 
+            click_button 'Follow'
+          end.to change(other_user.followers, :count).by(1)
+        end
+
+        describe "and unfollowing a user" do
+          before { click_button 'Follow' }
+          it { should have_button "Unfollow" }
+          
+          it "should decrement followed_users count" do
+            expect do
+              click_button 'Unfollow'
+            end.to change(user.followed_users, :count).by(-1)
+          end
+          
+          it "should decrement the other user's followers count" do
+            expect do
+              click_button 'Unfollow'
+            end.to change(other_user.followers, :count).by(-1)
+          end 
+        end
+      end
+    end
   end
  
   describe "signup" do
