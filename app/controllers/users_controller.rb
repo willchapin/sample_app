@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-before_filter :signed_in_user, only: [:index, :edit, :update, :destroy]
+before_filter :signed_in_user,
+              only: [:index, :edit, :update, :destroy, :followers, :following]
 before_filter :correct_user, only: [:edit, :update]
 before_filter :admin_user, only: [:destroy]
   
@@ -11,8 +12,9 @@ before_filter :admin_user, only: [:destroy]
     @user = User.find(params[:id])
     @microposts = @user.microposts.paginate(page: params[:page], per_page: 10)
   end
- 
+
   def new
+
     @user = User.new
   end
   
@@ -26,7 +28,7 @@ before_filter :admin_user, only: [:destroy]
       render 'new'
     end
   end
-  
+
   def edit
   end
 
@@ -44,6 +46,20 @@ before_filter :admin_user, only: [:destroy]
     User.find(params[:id]).destroy
     flash[:success] = "User destroyed."
     redirect_to users_path
+  end
+
+  def following
+    @title = "Following"
+    @user = User.find(params[:id])
+    @users = @user.followed_users.paginate(page: params[:page])
+    render 'show_follow'
+  end
+
+  def followers
+    @title = "Followers"
+    @user = User.find(params[:id])
+    @users = @user.followers.paginate(page: params[:page])
+    render 'show_follow'
   end
 
   private 
